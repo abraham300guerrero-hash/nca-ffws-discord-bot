@@ -19,6 +19,7 @@
 //   /ticket          (todos)           crea un canal privado de soporte
 //   /ticket-cerrar   (Líder/Capitán)   borra el canal ticket actual
 //   /reglas          (todos)           muestra el reglamento oficial del clan
+//   /rotaciones      (todos)           rotaciones, caídas y estrategias por mapa
 // Además: recordatorio automático de guerra (mié/vie/sáb 17:00 America/Chicago,
 // configurable con WAR_REMINDER_CRON) publicado en #convocatoria;
 // MVP semanal automático (domingos 18:00 America/Chicago, configurable con
@@ -37,6 +38,7 @@ const {
   Routes,
   SlashCommandBuilder,
   EmbedBuilder,
+  AttachmentBuilder,
   ChannelType,
   PermissionFlagsBits,
 } = require('discord.js');
@@ -44,6 +46,7 @@ const cron = require('node-cron');
 const db = require('./db');
 const utils = require('./utils');
 const fileCollector = require('./file_collector');
+const { ROTACIONES } = require('./rotaciones');
 const http = require('http');
 
 const TOKEN = process.env.DISCORD_TOKEN;
@@ -238,6 +241,22 @@ const commands = [
   new SlashCommandBuilder()
     .setName('reglas')
     .setDescription('Muestra el reglamento del clan NCA FFWS.'),
+
+  new SlashCommandBuilder()
+    .setName('rotaciones')
+    .setDescription('Muestra rotaciones, caídas y estrategias del mapa elegido.')
+    .addStringOption((o) =>
+      o
+        .setName('mapa')
+        .setDescription('¿Para qué mapa quieres la información?')
+        .setRequired(true)
+        .addChoices(
+          { name: 'Bermuda', value: 'bermuda' },
+          { name: 'Purgatorio', value: 'purgatorio' },
+          { name: 'Kalahari', value: 'kalahari' },
+          { name: 'NeXTerra', value: 'nexterra' },
+        ),
+    ),
 ];
 
 // ---------- Manejadores ----------
@@ -869,6 +888,30 @@ async function cmdReglas(interaction) {
   await interaction.reply({ embeds: [embed] });
 }
 
+async function cmdRotaciones(interaction) {
+  const mapaKey = interaction.options.getString('mapa');
+  const info = ROTACIONES[mapaKey];
+  if (!info) {
+    await interaction.reply({ content: '⚠️ Mapa no reconocido.', ephemeral: true });
+    return;
+  }
+  const embed = new EmbedBuilder()
+    .setColor(COLOR_CLAN)
+    .setTitle(`🗺️ ${info.nombre} — Rotaciones, caídas y estrategias`)
+    .addFields(
+      { name: '🔄 Rotaciones', value: info.rotaciones },
+      { name: '🪂 Caídas', value: info.caidas },
+      { name: '🧠 Estrategias', value: info.estrategias },
+    );
+  const files = [];
+  if (info.imagen) {
+    const attachment = new AttachmentBuilder(`./assets/${info.imagen}`);
+    files.push(attachment);
+    embed.setImage(`attachment://${info.imagen}`);
+  }
+  await interaction.reply({ embeds: [embed], files });
+}
+
 const handlers = {
   'puntos-agregar': cmdPuntosAgregar,
   'puntos-quitar': cmdPuntosQuitar,
@@ -887,6 +930,7 @@ const handlers = {
   'ticket': cmdTicket,
   'ticket-cerrar': cmdTicketCerrar,
   'reglas': cmdReglas,
+  'rotaciones': cmdRotaciones,
 };
 
 // Bienvenida por DM con el reglamento al unirse un miembro nuevo,
