@@ -1,6 +1,11 @@
 // rotaciones.js — Datos de rotaciones, caídas y estrategias por mapa (NCA LEAGUE).
-// Contenido investigado en la web (guías competitivas estilo FFWS, 2026-10-11)
-// y cargado al bot el 2026-10-11. Imágenes de referencia en ./assets/.
+// Contenido investigado en la web (guías competitivas estilo FFWS, 2026-10-11),
+// enriquecido el 2026-10-11 con el conocimiento de coaches (IZUKI.X, Coach_Gulosoff,
+// Coach.SlenderGun/Academia Free Fire, "Mastering Zone Rotation", MMO Culture).
+// Simbología de los mapas (aprobada por el líder):
+//   ROJO = caída caliente (disputada, para escuadras agresivas; disputado ≠ prohibido)
+//   AMARILLO = caída segura | "!" = peligro SOLO en rotación (puentes tardíos, campos abiertos)
+// Imágenes de referencia en ./assets/ (estilo TikTok/pro, sin solapes caída/peligro).
 
 const ROTACIONES = {
   bermuda: {
@@ -18,7 +23,12 @@ const ROTACIONES = {
       '🧠 Control del centro temprano (Peak = visión y ventaja). Peleas selectivas: solo con ventaja numérica o posicional. ' +
       'Micro-rotaciones silenciosas en endgame. 6-10 gloo walls por jugador. ' +
       'Roles: entry fragger, soportes, largo alcance; formación en línea/triángulo, nunca separados.',
-    imagen: 'bermuda-guia.png',
+    coaches:
+      '🎓 **Coach_Gulosoff**: Bimasakti Strip = central con varias rutas, muy disputado (solo agresivos); ' +
+      'Cape Town + Keraton = rotación directa entre ambos, ideal para buscar kills; Pochinok = clásico equilibrado. ' +
+      '**MMO Culture**: Peak = pelea directa; Mill = altura para vigilar rotaciones vecinas; ' +
+      'cruzar puentes temprano, nunca en zona tardía.',
+    imagen: 'bermuda-v3.png',
   },
   purgatorio: {
     nombre: 'Purgatorio',
@@ -33,7 +43,11 @@ const ROTACIONES = {
       '🧠 Centralidad = control (Brasilia/Marbleworks, jugar lockdown). Usar radios reveladoras para anticipar. ' +
       'Estilo metódico y a distancia. Limpiar interiores con granadas. Parada de tienda en mid-game. ' +
       'Endgame: gloo + inhaladores, altura, sin revelar posición.',
-    imagen: 'purgatorio-guia.png',
+    coaches:
+      '🎓 **MMO Culture**: el agua manda — Brasilia para pelear, Moathouse solo con ruta de escape lista, ' +
+      'Fields/Quarry para armarse tranquilos. Asegurar el puente o la ruta de movilidad con tiempo; ' +
+      'no esperar al último momento para cruzar vías de agua.',
+    imagen: 'purgatorio-v3.png',
   },
   kalahari: {
     nombre: 'Kalahari',
@@ -47,7 +61,10 @@ const ROTACIONES = {
     estrategias:
       '🧠 Mapa de snipers: rol de largo alcance obligatorio. En Refinery, limpiar en 60-90 s o salir antes del third party. ' +
       'Bayfront como trampa de puntos. Endgame en elevación, sin disparar hasta tener posición. Minimizar exposición (poca vegetación).',
-    imagen: 'kalahari-guia.jpg',
+    coaches:
+      '🎓 **Criterio de los coaches**: todo drop se evalúa con 4 puntos — loot rápido, posición/altura, rutas de rotación y nivel de disputa. ' +
+      'Si falla en 2 o más, no es tu caída. En Refinery: limpiar en 60-90 s o salir antes de que llegue el tercer equipo.',
+    imagen: 'kalahari-v3.png',
   },
   nexterra: {
     nombre: 'NeXTerra',
@@ -63,7 +80,11 @@ const ROTACIONES = {
       '🧠 Loadout híbrido (AR + escopeta). Armadura primero. Granadas para edificios interconectados. ' +
       'Movimiento/slide como defensa; strafe en anti-gravedad. Comunicación vertical por pisos; ' +
       'limpiar por pisos con granadas, nunca separarse.',
-    imagen: 'nexterra-guia.jpg',
+    coaches:
+      '🎓 **Coach.SlenderGun / Academia Free Fire**: estudiar el mapa por capas antes de fijar caídas — lanzaderas, ' +
+      'gráfica de lanzaderas, tiendas, cajas de armas, spots de monedas. Las rotaciones se planean sobre lanzaderas, no a pie. ' +
+      'Portales de Deca Square: no usarlos a ciegas en late.',
+    imagen: 'nexterra-v3.png',
   },
 };
 

@@ -902,6 +902,7 @@ async function cmdRotaciones(interaction) {
       { name: '🔄 Rotaciones', value: info.rotaciones },
       { name: '🪂 Caídas', value: info.caidas },
       { name: '🧠 Estrategias', value: info.estrategias },
+      { name: '🎓 Lo que enseñan los coaches', value: info.coaches },
     );
   const files = [];
   if (info.imagen) {
