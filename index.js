@@ -19,7 +19,7 @@
 //   /ticket          (todos)           crea un canal privado de soporte
 //   /ticket-cerrar   (Líder/Capitán)   borra el canal ticket actual
 //   /reglas          (todos)           muestra el reglamento oficial del clan
-//   /rotaciones      (todos)           rotaciones, caídas y estrategias por mapa
+//   /rotaciones      (todos)           publica en #rutinas la guía del mapa elegido
 // Además: recordatorio automático de guerra (mié/vie/sáb 17:00 America/Chicago,
 // configurable con WAR_REMINDER_CRON) publicado en #convocatoria;
 // MVP semanal automático (domingos 18:00 America/Chicago, configurable con
@@ -244,7 +244,7 @@ const commands = [
 
   new SlashCommandBuilder()
     .setName('rotaciones')
-    .setDescription('Muestra rotaciones, caídas y estrategias del mapa elegido.')
+    .setDescription('Publica en #rutinas las rotaciones, caídas y estrategias del mapa elegido.')
     .addStringOption((o) =>
       o
         .setName('mapa')
@@ -909,7 +909,17 @@ async function cmdRotaciones(interaction) {
     files.push(attachment);
     embed.setImage(`attachment://${info.imagen}`);
   }
-  await interaction.reply({ embeds: [embed], files });
+  // La guía se publica en el canal de entrenamiento (#rutinas).
+  const canalRutinas = findTextChannelByName(interaction.guild, 'rutinas');
+  if (canalRutinas) {
+    await canalRutinas.send({ embeds: [embed], files });
+    await interaction.reply({
+      content: '✅ Guía publicada en #rutinas. ¡A entrenar! 🎯',
+      ephemeral: true,
+    });
+  } else {
+    await interaction.reply({ embeds: [embed], files });
+  }
 }
 
 const handlers = {
