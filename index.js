@@ -44,6 +44,7 @@ const cron = require('node-cron');
 const db = require('./db');
 const utils = require('./utils');
 const fileCollector = require('./file_collector');
+const http = require('http');
 
 const TOKEN = process.env.DISCORD_TOKEN;
 const GUILD_ID = process.env.GUILD_ID;
@@ -950,6 +951,16 @@ client.once('ready', async () => {
 
 process.on('unhandledRejection', (err) => {
   console.error('⚠️ Error no controlado:', err && err.message ? err.message : err);
+});
+
+// Servidor HTTP mínimo para hosting gratuito (Render Web Service exige escuchar
+// en process.env.PORT). Sirve como health check y para el keep-alive externo.
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.end('NCA FFWS Bot en linea');
+}).listen(PORT, () => {
+  console.log(`🌐 HTTP escuchando en el puerto ${PORT}`);
 });
 
 client.login(TOKEN).catch(() => {
