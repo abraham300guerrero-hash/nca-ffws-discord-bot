@@ -18,7 +18,7 @@ const ROTACIONES = {
       '🧠 Control del centro temprano (Peak = visión y ventaja). Peleas selectivas: solo con ventaja numérica o posicional. ' +
       'Micro-rotaciones silenciosas en endgame. 6-10 gloo walls por jugador. ' +
       'Roles: entry fragger, soportes, largo alcance; formación en línea/triángulo, nunca separados.',
-    imagen: 'bermuda.png',
+    imagen: 'bermuda-guia.png',
   },
   purgatorio: {
     nombre: 'Purgatorio',
@@ -33,7 +33,7 @@ const ROTACIONES = {
       '🧠 Centralidad = control (Brasilia/Marbleworks, jugar lockdown). Usar radios reveladoras para anticipar. ' +
       'Estilo metódico y a distancia. Limpiar interiores con granadas. Parada de tienda en mid-game. ' +
       'Endgame: gloo + inhaladores, altura, sin revelar posición.',
-    imagen: 'purgatorio.png',
+    imagen: 'purgatorio-guia.png',
   },
   kalahari: {
     nombre: 'Kalahari',
@@ -47,7 +47,7 @@ const ROTACIONES = {
     estrategias:
       '🧠 Mapa de snipers: rol de largo alcance obligatorio. En Refinery, limpiar en 60-90 s o salir antes del third party. ' +
       'Bayfront como trampa de puntos. Endgame en elevación, sin disparar hasta tener posición. Minimizar exposición (poca vegetación).',
-    imagen: 'kalahari.jpg',
+    imagen: 'kalahari-guia.jpg',
   },
   nexterra: {
     nombre: 'NeXTerra',
@@ -63,7 +63,7 @@ const ROTACIONES = {
       '🧠 Loadout híbrido (AR + escopeta). Armadura primero. Granadas para edificios interconectados. ' +
       'Movimiento/slide como defensa; strafe en anti-gravedad. Comunicación vertical por pisos; ' +
       'limpiar por pisos con granadas, nunca separarse.',
-    imagen: 'nexterra.jpg',
+    imagen: 'nexterra-guia.jpg',
   },
 };
 
