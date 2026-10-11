@@ -889,7 +889,9 @@ const handlers = {
   'reglas': cmdReglas,
 };
 
-// Bienvenida por DM con el reglamento al unirse un miembro nuevo.
+// Bienvenida por DM con el reglamento al unirse un miembro nuevo,
+// más asignación automática del rol "Jugador" (da acceso a las 12
+// secciones de escuadra y demás espacios del clan).
 // Requiere el intent privilegiado GuildMembers (toggle "SERVER MEMBERS INTENT"
 // en el portal de desarrolladores). Si el usuario tiene los DM cerrados,
 // el error se ignora en silencio.
@@ -902,6 +904,17 @@ client.on('guildMemberAdd', async (member) => {
     await member.send({ embeds: [embed] });
   } catch (_) {
     // DMs cerrados: no se hace nada.
+  }
+  try {
+    const jugadorRole = member.guild.roles.cache.find((r) => r.name === 'Jugador');
+    if (jugadorRole) {
+      await member.roles.add(jugadorRole);
+      console.log(`✅ Rol Jugador asignado a ${member.user.tag}`);
+    } else {
+      console.warn('⚠️ No se encontró el rol "Jugador" para auto-asignar.');
+    }
+  } catch (err) {
+    console.error('⚠️ No se pudo asignar el rol Jugador:', err && err.message ? err.message : err);
   }
 });
 
