@@ -6,12 +6,31 @@ const path = require('path');
 const W = 1200;
 const H = 514;
 const BG_PATH = path.join(__dirname, 'assets', 'welcome-bg.webp');
+const SHIELD_PATH = path.join(__dirname, 'assets', 'nca-shield.png');
 const FONT = '"DejaVu Sans", "Liberation Sans", sans-serif';
 
 let bgCache = null;
 async function getBackground() {
   if (!bgCache) bgCache = await loadImage(BG_PATH);
   return bgCache;
+}
+
+// Escudo NCA con el negro vuelto transparente (el logo viene en fondo negro).
+let shieldCache = null;
+async function getShield() {
+  if (shieldCache) return shieldCache;
+  const img = await loadImage(SHIELD_PATH);
+  const c = createCanvas(img.width, img.height);
+  const g = c.getContext('2d');
+  g.drawImage(img, 0, 0);
+  const data = g.getImageData(0, 0, c.width, c.height);
+  const px = data.data;
+  for (let i = 0; i < px.length; i += 4) {
+    if (px[i] < 32 && px[i + 1] < 32 && px[i + 2] < 32) px[i + 3] = 0;
+  }
+  g.putImageData(data, 0, 0);
+  shieldCache = c;
+  return c;
 }
 
 function fitFont(ctx, text, maxWidth, baseSize, weight) {
@@ -34,12 +53,24 @@ async function buildWelcomeCard({ displayName, avatarURL }) {
   const dh = bg.height * s;
   ctx.drawImage(bg, (W - dw) / 2, (H - dh) / 2, dw, dh);
 
+  // Oscurecer la parte baja para que el texto lea bien.
   const grad = ctx.createLinearGradient(0, H * 0.45, 0, H);
   grad.addColorStop(0, 'rgba(0,0,0,0)');
   grad.addColorStop(1, 'rgba(0,0,10,0.82)');
   ctx.fillStyle = grad;
   ctx.fillRect(0, 0, W, H);
 
+  // ---- Escudo NCA en la esquina superior izquierda ----
+  try {
+    const shield = await getShield();
+    const sw = 190;
+    const sh = (shield.height / shield.width) * sw;
+    ctx.drawImage(shield, 28, 22, sw, sh);
+  } catch (_) {
+    // Sin escudo no se rompe la tarjeta.
+  }
+
+  // ---- Avatar circular con anillo eléctrico ----
   const ax = W / 2;
   const ay = 195;
   const ar = 105;
@@ -76,6 +107,7 @@ async function buildWelcomeCard({ displayName, avatarURL }) {
     }
   }
   if (!drewAvatar) {
+    // Silueta genérica si no hay avatar o falló la descarga.
     const ag = ctx.createLinearGradient(ax - ar, ay - ar, ax + ar, ay + ar);
     ag.addColorStop(0, '#1a2340');
     ag.addColorStop(1, '#0a0e1f');
@@ -96,6 +128,7 @@ async function buildWelcomeCard({ displayName, avatarURL }) {
   ctx.lineWidth = 4;
   ctx.stroke();
 
+  // ---- Textos ----
   const name = (displayName || 'Nuevo miembro').slice(0, 24);
   ctx.textAlign = 'center';
 
