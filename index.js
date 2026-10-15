@@ -971,6 +971,27 @@ client.on('guildMemberAdd', async (member) => {
   } catch (err) {
     console.error('⚠️ No se pudo asignar el rol Jugador:', err && err.message ? err.message : err);
   }
+  // Tarjeta de bienvenida en #bienvenida.
+  try {
+    const canal = findTextChannelByName(member.guild, 'bienvenida');
+    if (!canal) {
+      console.warn('⚠️ No se encontró el canal #bienvenida para la tarjeta.');
+    } else {
+      const { buildWelcomeCard } = require('./welcome_card');
+      const avatarURL = member.user.displayAvatarURL({ extension: 'png', size: 256 });
+      const buffer = await buildWelcomeCard({
+        displayName: member.displayName || member.user.username,
+        avatarURL,
+      });
+      await canal.send({
+        content: `¡Bienvenido ${member} a **NCA FFWS**! 🐺`,
+        files: [{ attachment: buffer, name: 'bienvenida-nca.png' }],
+      });
+      console.log(`✅ Tarjeta de bienvenida publicada para ${member.user.tag}`);
+    }
+  } catch (err) {
+    console.error('⚠️ No se pudo publicar la tarjeta de bienvenida:', err && err.message ? err.message : err);
+  }
 });
 
 // Colector de archivos: todo mensaje con adjuntos se reenvía a
